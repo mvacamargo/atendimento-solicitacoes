@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateComplexidadesTable extends Migration
+class CreateUnidadeTempoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateComplexidadesTable extends Migration
      */
     public function up()
     {
-        Schema::create('complexidades', function (Blueprint $table) {
+        Schema::create('unidade_tempo', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('descricao');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateComplexidadesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('complexidades');
+        Schema::dropIfExists('unidade_tempo');
     }
 }

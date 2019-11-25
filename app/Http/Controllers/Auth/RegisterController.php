@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Traits\UploadTrait;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -22,6 +24,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
+    use UploadTrait;
 
     /**
      * Where to redirect users after registration.
@@ -49,9 +52,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'profile_image' => ['required', 'image', 'max:2048'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:3', 'confirmed'],
         ]);
     }
 
@@ -63,10 +67,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if ($data['profile_image']) {
+            $image = $data['profile_image'];
+            $name = Str::slug($data['name']) . '_' . time();
+            $folder = 'public/perfis/';
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            $this->uploadOne($image, $folder, 'public', $name);
+            $profile_image = $filePath;
+        }
         return User::create([
+            'profile_image' => $profile_image,
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function show(User $user)
+    {
+        $user = User::findOrFail($user);
+        return view('auth.profile', compact('user'));
     }
 }

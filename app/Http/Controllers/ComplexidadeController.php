@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Complexidade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class ComplexidadeController extends Controller
 {
@@ -14,7 +16,8 @@ class ComplexidadeController extends Controller
      */
     public function index()
     {
-        //
+        $complexidade = Complexidade::all();
+        return view('complexidade.index', compact('complexidade'));
     }
 
     /**
@@ -24,7 +27,7 @@ class ComplexidadeController extends Controller
      */
     public function create()
     {
-        //
+        return view('complexidade.create');
     }
 
     /**
@@ -35,18 +38,16 @@ class ComplexidadeController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Complexidade  $complexidade
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Complexidade $complexidade)
-    {
-        //
+        $request->validate([
+            'descricao' => 'required|max:100',
+        ]);
+        if (Complexidade::create($request->except('_token'))) {
+            Session::flash('flash_message_success', 'Complexidade cadastrada com sucesso!');
+        } else {
+            Log::channel('slack')->error('Erro ao cadastrar Complexidade!');
+            Session::flash('flash_message_error', 'Complexidade não cadastrada! Por favor, tente novamente.');
+        }
+        return redirect('complexidade');
     }
 
     /**
@@ -57,7 +58,7 @@ class ComplexidadeController extends Controller
      */
     public function edit(Complexidade $complexidade)
     {
-        //
+        return view('complexidade.edit', compact('complexidade'));
     }
 
     /**
@@ -69,7 +70,16 @@ class ComplexidadeController extends Controller
      */
     public function update(Request $request, Complexidade $complexidade)
     {
-        //
+        $request->validate([
+            'descricao' => 'required|max:100',
+        ]);
+        if ($complexidade->update($request->except('_token'))) {
+            Session::flash('flash_message_success', 'Complexidade alterada com sucesso!');
+        } else {
+            Log::channel('slack')->error('Erro ao alterar Complexidade!');
+            Session::flash('flash_message_error', 'Complexidade não alterada! Por favor, tente novamente.');
+        }
+        return redirect('complexidade');
     }
 
     /**
@@ -80,6 +90,12 @@ class ComplexidadeController extends Controller
      */
     public function destroy(Complexidade $complexidade)
     {
-        //
+        if ($complexidade->delete()) {
+            Session::flash('flash_message_success', 'Complexidade excluída com sucesso!');
+        } else {
+            Log::channel('slack')->error('Erro ao excluir Complexidade!');
+            Session::flash('flash_message_error', 'Complexidade não excluída! Por favor, tente novamente.');
+        }
+        return redirect('complexidade');
     }
 }

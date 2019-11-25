@@ -12,13 +12,34 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.app');
 });
 
-Route::resource('Complexidade','ComplexidadeController');
-Route::resource('Status','StatusController');
-Route::resource('TipoServico','TipoServicoController');
-Route::resource('UnidadeTempo','UnidadeTempoController');
+Route::middleware(['auth'])->group(function () {
+    //Solicitacao
+    Route::resource('solicitacao', 'SolicitacaoController')->except([
+        'create', 'store', 'show', 'destroy'
+    ]);
+    //Status
+    Route::resource('status', 'StatusController')->except([
+        'create', 'store', 'show', 'edit', 'update', 'destroy'
+    ]);
+    //Tipo de Servico
+    Route::resource('tipoServico', 'TipoServicoController')->except([
+        'show'
+    ]);
+    //Unidade de Tempo
+    Route::resource('unidadeTempo', 'UnidadeTempoController')->except([
+        'show'
+    ]);
+    //Complexidade
+    Route::resource('complexidade', 'ComplexidadeController')->except([
+        'show'
+    ]);
+    //Perfil do Usuario
+    Route::get('/profile', 'Auth.RegisterController@show')->name('profile');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

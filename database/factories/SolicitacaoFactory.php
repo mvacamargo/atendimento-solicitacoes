@@ -8,6 +8,7 @@ $factory->define(Solicitacao::class, function (Faker $faker) {
         'email' => $faker->email,
         'data' => $faker->date,
         'descricao' => $faker->text,
+        'status_id' => rand(1, 3),
         'user_id' => 1
     ];
 });

@@ -5,14 +5,4 @@
 
 
 
-
-Status::all();
-
-
-
-
-
-
-
-
-UnidadeTempo::all();
+User::all();
