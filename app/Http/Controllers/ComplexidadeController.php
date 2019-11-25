@@ -42,6 +42,7 @@ class ComplexidadeController extends Controller
             'descricao' => 'required|max:100',
         ]);
         if (Complexidade::create($request->except('_token'))) {
+            Log::channel('slack')->critical('Erro ao cadastrar Complexidade!');
             Session::flash('flash_message_success', 'Complexidade cadastrada com sucesso!');
         } else {
             Log::channel('slack')->error('Erro ao cadastrar Complexidade!');
@@ -74,6 +75,7 @@ class ComplexidadeController extends Controller
             'descricao' => 'required|max:100',
         ]);
         if ($complexidade->update($request->except('_token'))) {
+            Log::channel('slack')->critical('Erro ao alterar Complexidade!');
             Session::flash('flash_message_success', 'Complexidade alterada com sucesso!');
         } else {
             Log::channel('slack')->error('Erro ao alterar Complexidade!');

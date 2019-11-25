@@ -8,25 +8,25 @@
     <a href="{{ url('/complexidade/create') }}">Nova Complexidade</a>
 </div>
 <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-dark table-bordered table-striped">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Descrição</th>
-                <th>Ações</th>
+                <th class="col-md-2">#</th>
+                <th class="col-md-6">Descrição</th>
+                <th class="col-md-4">Ações</th>
             </tr>
         </thead>
         <tbody>
             @forelse($complexidade as $c)
             <tr>
-                <td>{{$c->id}}</td>
-                <td>{{$c->descricao}}</td>
+                <td class="align-middle">{{$c->id}}</td>
+                <td class="align-middle">{{$c->descricao}}</td>
                 <td>
-                    <a href="{{ url('/complexidade/'.$c->id.'/edit') }}" class="btn">Editar</a>
+                    <a href="{{ url('/complexidade/'.$c->id.'/edit') }}" class="btn btn-block btn-outline-secondary">Editar</a>
                     <form action="/complexidade/{{$c->id}}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Excluir</button>
+                        <button type="submit" class="btn btn-block btn-outline-danger">Excluir</button>
                     </form>
                 </td>
             </tr>

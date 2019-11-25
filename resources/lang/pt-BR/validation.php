@@ -177,5 +177,7 @@ return [
         'year'                  => 'ano',
         'email'                 => 'e-mail',
         'remember'              => 'lembrar-me',
+        'descricao'             => 'DESCRIÇÃO',
+        'tempoGasto'            => 'TEMPO GASTO'
     ],
 ];

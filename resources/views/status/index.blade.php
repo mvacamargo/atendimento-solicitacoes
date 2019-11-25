@@ -1,20 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-<h2>Listagem de Status - {{count($status)}} registro(s)</h2>
+<div class="row">
+    <h2>Listagem de Status / <span class="badge badge-secondary">{{count($status)}}</span> registro(s)</h2>
+</div>
 <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-dark table-bordered table-striped">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Descrição</th>
+                <th class="col-md-2">#</th>
+                <th class="col-md-10">Descrição</th>
             </tr>
         </thead>
         <tbody>
             @forelse($status as $s)
             <tr>
-                <td>{{$s->id}}</td>
-                <td>{{$s->descricao}}</td>
+                <td class="align-middle">{{$s->id}}</td>
+                <td class="align-middle">{{$s->descricao}}</td>
             </tr>
             @empty
             <tr>
